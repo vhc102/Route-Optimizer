@@ -57,7 +57,6 @@ Swagger UI
 | Parameter | Type     | Description                                                     |
 | :-------- | :------- |:----------------------------------------------------------------|
 | `start` | `string` | **Required**. e.g. Los+Angeles,+CA / 34.058151,-118.2464767     |
- |
 | `finish` | `string` | **Required**. e.g.  San+Francisco,+CA / 37.7749552,-122.4195329 |
 
 ### Output 
