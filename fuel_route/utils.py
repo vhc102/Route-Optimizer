@@ -25,22 +25,25 @@ def load_fuel_prices_from_csv(file_path):
 
 
 def get_route_data(origin, destination):
-    directions = gmaps.directions(
-        origin=origin,
-        destination=destination,
-        mode="driving"
-    )
-    if not directions:
+    try:
+        directions = gmaps.directions(
+            origin=origin,
+            destination=destination,
+            mode="driving"
+        )
+        if not directions:
+            raise ValueError("Route not found.")
+
+        route = directions[0]["legs"][0]
+        total_distance = route["distance"]["value"] / 1609.34  # Convert meters to miles
+        steps = route["steps"]
+
+        return {
+            "total_distance": total_distance,
+            "steps": [{"location": step["end_location"], "distance": step["distance"]["value"]} for step in steps],
+        }
+    except googlemaps.exceptions.ApiError:
         raise ValueError("Route not found.")
-
-    route = directions[0]["legs"][0]
-    total_distance = route["distance"]["value"] / 1609.34  # Convert meters to miles
-    steps = route["steps"]
-
-    return {
-        "total_distance": total_distance,
-        "steps": [{"location": step["end_location"], "distance": step["distance"]["value"]} for step in steps],
-    }
 
 
 def calculate_fuel_cost(route_data, csv_file_path, mpg=10, max_range=500):
